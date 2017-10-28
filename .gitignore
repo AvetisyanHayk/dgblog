@@ -1,0 +1,11 @@
+bootstrap/compiled.php
+
+app/tests/_log
+
+.idea/
+
+app/config/packages/
+
+public/packages/
+
+node_modules/
