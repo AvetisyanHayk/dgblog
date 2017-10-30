@@ -16,7 +16,7 @@ class PostController extends Controller
      */
     public function postAdminCreate(Request $request) {
         $this->validatePost($request);
-        $content = Tools::convertMultilineToSingleLine($request->input('content'));
+        $content = Tools::convertMultilineToSingleline($request->input('content'));
         $post = $this->build($request, $content);
         $post->save();
         return redirect()->route('_admin.post.edit', ['reference' => $request->input('reference')])
@@ -30,6 +30,7 @@ class PostController extends Controller
      */
     public function postAdminEdit($reference) {
         $post = Post::where('reference', $reference)->first();
+        $post->content = Tools::convertSinglelineToMultiline($post->content);
         if ($post === null) {
             return view('admin.post_notfound', ['reference' => $reference]);
         } else {
@@ -44,7 +45,7 @@ class PostController extends Controller
      */
     public function postAdminUpdate(Request $request) {
         $this->validatePost($request);
-        $content = Tools::convertMultilineToSingleLine($request->input('content'));
+        $content = Tools::convertMultilineToSingleline($request->input('content'));
         $post = Post::find($request->input('id'));
         $post->reference = $request->input('reference');
         $post->title = $request->input('title');

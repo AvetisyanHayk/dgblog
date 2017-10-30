@@ -11,7 +11,7 @@ namespace App\Http;
 
 class Tools
 {
-    public static function convertMultilineToSingleLine($multiline)
+    public static function convertMultilineToSingleline($multiline)
     {
         $lines = preg_split ('/(\r\n|\n|\r)/m', $multiline);
         $trimmedLines = [];
@@ -27,5 +27,19 @@ class Tools
             }
             return $singleline;
         }
+    }
+
+    public static function convertSinglelineToMultiline($singleline) {
+        $lines = explode('%n', $singleline);
+        if (sizeof($lines) == 1) {
+            return $lines[0];
+        } else {
+            $multiline = $lines[0];
+            for ($i = 1; $i < sizeof($lines); $i++) {
+                $multiline .= "\r\n" . $lines[$i];
+            }
+            return $multiline;
+        }
+         
     }
 }
