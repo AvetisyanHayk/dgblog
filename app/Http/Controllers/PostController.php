@@ -39,9 +39,8 @@ class PostController extends Controller
     }
 
     /**
-     * Update Post (POST)
      * @param Request $request
-     * @return $this
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function postAdminUpdate(Request $request) {
         $this->validatePost($request);
