@@ -16,8 +16,7 @@ class PostController extends Controller
      */
     public function postAdminCreate(Request $request) {
         $this->validatePost($request);
-        $content = Tools::convertMultilineToSingleline($request->input('content'));
-        $post = $this->build($request, $content);
+        $post = $this->build($request);
         $post->save();
         return redirect()->route('_admin.post.edit', ['reference' => $request->input('reference')])
             ->with(['result' => 'save-ok']);
@@ -30,7 +29,6 @@ class PostController extends Controller
      */
     public function postAdminEdit($reference) {
         $post = Post::where('reference', $reference)->first();
-        $post->content = Tools::convertSinglelineToMultiline($post->content);
         if ($post === null) {
             return view('admin.post_notfound', ['reference' => $reference]);
         } else {
@@ -44,13 +42,8 @@ class PostController extends Controller
      */
     public function postAdminUpdate(Request $request) {
         $this->validatePost($request);
-        $content = Tools::convertMultilineToSingleline($request->input('content'));
         $post = Post::find($request->input('id'));
-        $post->reference = $request->input('reference');
-        $post->title = $request->input('title');
-        $post->content = $content;
-        $post->urlid = $request->input('urlid');
-        $post->date = $request->input('date');
+        $post = build($request, $post);
         $post->save();
         return redirect()->route('_admin.post.edit', ['reference' => $request->input('reference')])
             ->with(['result' => 'edit-ok'])
@@ -90,6 +83,23 @@ class PostController extends Controller
         return "Posts";
     }
 
+    /**
+     * Content Accessor
+     * @param $value
+     * @return string
+     */
+    public function getContentAttribute($value) {
+        return Tools::convertSinglelineToMultiline($value);
+    }
+
+    /**
+     * Content Mutator
+     * @param $value
+     */
+    public function setContentAttribute($value) {
+        $this->attributes['content'] = Tools::convertMultilineToSingleline($value);
+    }
+
     private function validatePost($request) {
         $this->validate($request, [
             'reference' => 'required|integer',
@@ -100,13 +110,15 @@ class PostController extends Controller
         ]);
     }
 
-    private function build($request, $content) {
-        return new Post([
-            'reference' => $request->input('reference'),
-            'title' => $request->input('title'),
-            'content' => $content,
-            'urlid' => $request->input('urlid'),
-            'date' => $request->input('date')
-        ]);
+    private function build($request, $post = null) {
+        if (!isset($post)) {
+            $post = new Post();
+        }
+        $post->reference = $request->input('reference');
+        $post->title = $request->input('title');
+        $post->content = $request->input('content');
+        $post->urlid = $request->input('urlid');
+        $post->date = $request->input('date');
+        return $post;
     }
 }

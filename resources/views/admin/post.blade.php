@@ -97,20 +97,21 @@
                 <div class="form-group">
                     <div class="col-sm-2">&nbsp;</div>
                     <div class="col-sm-10">
-                        <button type="submit" class="btn btn-info">
+                        <button type="submit" class="btn btn-info" data-type="spin-on-post">
                             <i class="fa fa-fw fa-save"></i> Պահպանել
                         </button>
-                        <button type="reset" class="btn btn-success">
+                        <button type="reset" class="btn btn-success" data-type="disable-on-submit">
                             <i class="fa fa-fw fa-undo"></i> Վերականգնել
                         </button>
                         @if(isset($post))
                             <button type="button" class="btn btn-danger" data-toggle="modal"
-                                    data-target="#modalDeletePost">
+                                    data-type="disable-on-submit" data-target="#modalDeletePost">
                                 <i class="fa fa-fw fa-trash"></i> Ջնջել
                             </button>
                         @endif
-                        <a class="btn btn-light" href="{{ route('_admin.posts') }}" role="button"><i class="fa fa-fw fa-remove"></i>
-                            Չեղարկել</a>
+                        <a class="btn btn-light" href="{{ route('_admin.posts') }}" role="button"
+                           data-type="disable-on-submit">
+                            <i class="fa fa-fw fa-remove"></i> Չեղարկել</a>
                     </div>
                 </div>
             </form>
@@ -127,18 +128,23 @@
                                     <span aria-hidden="true">&times;</span></button>
                             </div>
                             <div class="modal-body">
-                                Դուք փորձում եք ջնջել #{{ $post->reference }} գրառումը:
-                                <br>Խնդրում ենք հաստատել:
+                                <p>
+                                    Դուք փորձում եք ջնջել #{{ $post->reference }} գրառումը, որն այլևս հնարավոր չի լինի
+                                    վերականգնել:
+                                </p>
+                                <p class="no-margin">Խնդրում ենք հաստատել:</p>
                             </div>
                             <div class="modal-footer">
                                 <form method="post" action="{{ route('_admin.post.delete', ['id' => $post->id]) }}">
                                     {{ csrf_field() }}
                                     <input type="hidden" name="id" value="{{ $post->id }}"/>
-                                    <button type="submit" class="btn btn-danger">
-                                        <i class="fa fa-fw fa-trash"></i> Ջնջել գրառումը</button>
+                                    <button type="submit" class="btn btn-danger" data-type="spin-on-post">
+                                        <i class="fa fa-fw fa-trash"></i> Ջնջել գրառումը
+                                    </button>
                                 </form>
                                 <button type="button" class="btn btn-light" data-dismiss="modal">
-                                    <i class="fa fa-fw fa-remove"></i> Փակել</button>
+                                    <i class="fa fa-fw fa-remove"></i> Փակել
+                                </button>
                             </div>
                         </div>
                     </div>
