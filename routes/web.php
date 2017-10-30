@@ -12,5 +12,8 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('public.index');
 });
+
+require_once "public/routes.php";
+require_once "admin/routes.php";
