@@ -43,7 +43,7 @@ class PostController extends Controller
     public function postAdminUpdate(Request $request) {
         $this->validatePost($request);
         $post = Post::find($request->input('id'));
-        $post = build($request, $post);
+        $post = $this->build($request, $post);
         $post->save();
         return redirect()->route('_admin.post.edit', ['reference' => $request->input('reference')])
             ->with(['result' => 'edit-ok'])
