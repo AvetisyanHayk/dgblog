@@ -9,10 +9,16 @@ folders:
     -
         map: 'H:\Users\Hayk\Documents\Laravel Projects\dgblog'
         to: /home/vagrant/code
+    -
+        map: 'H:\Users\Hayk\Documents\Laravel Projects\dgblog\phpMyAdmin'
+        to: /home/vagrant/code/phpMyAdmin
 sites:
     -
         map: homestead.test
         to: /home/vagrant/code/public
+    -
+        map: phpmyadmin.app
+        to: //home/vagrant/code/phpMyAdmin
 databases:
     - homestead
 name: dgblog

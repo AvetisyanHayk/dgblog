@@ -9,3 +9,5 @@ app/config/packages/
 public/packages/
 
 node_modules/
+
+phpmyadmin/
